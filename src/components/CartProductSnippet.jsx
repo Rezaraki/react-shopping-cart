@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { addToCart } from "../features/cartSlice";
+import { addCount, decount, deleteItem } from "../features/cartSlice";
 
 const CartProductSnippet = ({
   props: { id, name, price, image },
@@ -10,18 +10,35 @@ const CartProductSnippet = ({
 
   const dispatch = useDispatch();
 
-  const clickHandler = (prodId) => {
-    dispatch(addToCart(prodId));
+  const addHandler = (prodId) => {
+    dispatch(addCount(prodId));
+  };
+  const decreaseHandler = (prodId) => {
+    dispatch(decount(prodId));
+  };
+  const deleteHandler = (prodId) => {
+    dispatch(deleteItem(prodId));
   };
 
   return (
-    <div className="w-full">
-      <img className="" src={image} alt={name} />
-      <h2>{name}</h2>
-      <span>quantity :{quantity}</span>
-      <h2>price: {price}</h2>
+    <div className="box-border px-1 pt-1   mb-2 ">
+      <div className="flex w-full h-64  ">
+        <img className="h-full rounded-lg" src={image} alt={name} />
+        <div className="  w-full   bg-slate-300 rounded-lg">
+          <h2>{name}</h2>
+          <h2 className="inline-block">quantity:</h2>
+          <button className="border" onClick={() => addHandler(id)}>
+            add
+          </button>
+          <span> {quantity} </span>
+          <button className="border" onClick={() => decreaseHandler(id)}>
+            decrease
+          </button>
+          <h2>price: {price}</h2>
 
-      <button onClick={() => clickHandler(id)}>add to cart</button>
+          <button onClick={() => deleteHandler(id)}>delete</button>
+        </div>
+      </div>
     </div>
   );
 };

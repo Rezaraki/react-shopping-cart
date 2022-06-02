@@ -7,7 +7,7 @@ const Cart = () => {
     const cartData = useSelector((state) => state.cart)
     const dispatch = useDispatch()
     const products = useSelector((state) => state.products);
-
+    // 
     //  find products with the given id
     const findProdWithId = (id, productsArr) => productsArr.find(prod => prod.id === id)
 
@@ -16,14 +16,14 @@ const Cart = () => {
 
     //  an array of cart products with id and quantity
     const matchCartDataToProduct = (cartDataArr, productsArr) => cartDataArr.map(cartDataArrElem => cartProdObjMaker(cartDataArrElem, productsArr))
+    const prodsToShow = matchCartDataToProduct(cartData, products)
 
 
+    const cartproductCount = prodsToShow.length
 
+    const totalCost = prodsToShow.map(prod => prod.quantity * prod.productBody.price).reduce((preVal, curVal) => preVal + curVal)
+    console.log(totalCost)
 
-    // const [productsToshow, SetProductsToshow] = useState()
-    // SetProductsToshow(ProductsToShow)
-    // ************doesnt rerender on change of quantity and probably anything else
-    // not functioned enough
     return (
         <>
 
@@ -31,14 +31,17 @@ const Cart = () => {
 
             <div className="flex justify-center ">
                 {/* main */}
-                <main className="w-3/5 bg-gray-400 grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 ">
-                    {matchCartDataToProduct(cartData, products).map(elem => <CartProductSnippet key={elem.productId} quantity={elem.quantity} props={elem.productBody} />)}
+                <main className="w-3/5 bg-gray-400  ">
+                    {prodsToShow.map(elem => <CartProductSnippet key={elem.productId} quantity={elem.quantity} props={elem.productBody} />)}
+
                 </main>
-                <aside>some content to be placed here</aside>
+                <aside className='bg-white'> <div>
+                    <h2>number of items: {cartproductCount}</h2>
+                    cart totalcost {totalCost} </div></aside>
 
             </div>
 
         </>);
 }
-
+// grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6
 export default Cart;
