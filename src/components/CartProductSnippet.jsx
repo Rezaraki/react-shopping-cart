@@ -21,17 +21,18 @@ const CartProductSnippet = ({
   };
 
   return (
-    <div className="box-border px-1 pt-1   mb-2 ">
-      <div className="flex w-full h-64  ">
+    <div className="box-border px-1 pt-1  mb-2 ">
+      <div className="flex w-full bg-slate-300 rounded-lg  h-36 ">
         <img className="h-full rounded-lg" src={image} alt={name} />
-        <div className="  w-full   bg-slate-300 rounded-lg">
+
+        <div className="  flex justify-around w-full ">
           <h2>{name}</h2>
-          <h2 className="inline-block">quantity:</h2>
-          <button className="border" onClick={() => addHandler(id)}>
+          <h2 className=" ">quantity:</h2>
+          <button className="  min-h-0 " onClick={() => addHandler(id)}>
             add
           </button>
           <span> {quantity} </span>
-          <button className="border" onClick={() => decreaseHandler(id)}>
+          <button className="  min-h-min " onClick={() => decreaseHandler(id)}>
             decrease
           </button>
           <h2>price: {price}</h2>

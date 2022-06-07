@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import CartProductSnippet from '../components/CartProductSnippet';
 
 const Cart = () => {
-
-    const cartData = useSelector((state) => state.cart)
+    const navigate = useNavigate()
+    const cartData = useSelector(state => state.cart)
     const dispatch = useDispatch()
-    const products = useSelector((state) => state.products);
+    const products = useSelector(state => state.products);
     // 
     //  find products with the given id
     const findProdWithId = (id, productsArr) => productsArr.find(prod => prod.id === id)
@@ -18,11 +19,11 @@ const Cart = () => {
     const matchCartDataToProduct = (cartDataArr, productsArr) => cartDataArr.map(cartDataArrElem => cartProdObjMaker(cartDataArrElem, productsArr))
     const prodsToShow = matchCartDataToProduct(cartData, products)
 
-
+    // number of deferent type product not with the quantity count
     const cartproductCount = prodsToShow.length
 
-    const totalCost = prodsToShow.map(prod => prod.quantity * prod.productBody.price).reduce((preVal, curVal) => preVal + curVal)
-    console.log(totalCost)
+    const totalCost = prodsToShow.map(prod => prod.quantity * prod.productBody.price)?.reduce((preVal, curVal) => preVal + curVal, 0)
+
 
     return (
         <>
@@ -35,9 +36,13 @@ const Cart = () => {
                     {prodsToShow.map(elem => <CartProductSnippet key={elem.productId} quantity={elem.quantity} props={elem.productBody} />)}
 
                 </main>
-                <aside className='bg-white'> <div>
-                    <h2>number of items: {cartproductCount}</h2>
-                    cart totalcost {totalCost} </div></aside>
+                <aside className='w-1/5 ml-7'>
+                    <div className='border  bg-gray-400  '>
+                        <h2>number of items: {cartproductCount}</h2>
+                        <h2>cart totalcost {totalCost} </h2>
+                        <button className='' onClick={() => { navigate('/checkout') }}>go to checkout</button>
+                    </div>
+                </aside>
 
             </div>
 

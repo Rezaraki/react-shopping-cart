@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ProductSnippet from "../components/ProductSnippet";
 
 const HomePage = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   let [availableProducts, setAvailableProducts] = useState();
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
