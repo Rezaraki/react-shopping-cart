@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+
 import './App.css';
-// import Layout from './layout/Layout';
 import HomePage from './pages/HomePage';
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Cart from './pages/Cart';
-import { useSelector } from 'react-redux';
+
 import Checkout from './pages/Checkout';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignupPage';
 
+import NavBar from './components/NavBar';
+import { useEffect } from 'react';
+import loginFunc from './utilities/loginFunc';
+
 function App() {
-  const cartCount = useSelector(state => state.cart.length)
+  const localUserData = JSON.parse(localStorage.getItem('loggedUserData'))
+
+  useEffect(() => {
+    const { email, password } = localUserData
+    const loginValues = { email, password }
+
+    loginFunc(loginValues)
+      .then(response => {
+
+        dispatch(logUserIn(response.data))
+        localStorage.setItem('loggedUserData', JSON.stringify(response.data))
+        if (cartCount) navigate('/cart'); else navigate('/')
+      })
+      .catch(error => { setLoginErr(error.response.data.message) })
+
+
+  }, [])
+
   return (
 
     <Router>
-      <Link to='/'>home </Link>
-      <Link to='/cart'>cart<span>{cartCount}</span></Link>
-      <Link to='/Login'> login </Link>
-      <Link to='/SignUp'>sign up</Link>
+      <NavBar />
 
 
       <Routes>

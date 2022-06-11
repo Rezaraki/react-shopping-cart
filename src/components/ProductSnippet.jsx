@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/cartSlice";
 import { useNavigate } from "react-router-dom";
+
 const ProductSnippet = ({ props: { id, name, price, image } }) => {
   //   console.log(id, name, price, image);
   //   { id, name, price, image }

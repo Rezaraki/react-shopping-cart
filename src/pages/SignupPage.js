@@ -1,15 +1,20 @@
 import { useFormik } from "formik";
 import Input from "../components/Input";
 import * as Yup from 'yup';
+import { NavLink } from "react-router-dom";
+import axios from "axios"
+import { useState } from "react";
 
 const initialValues = {
     name: "",
     email: "",
     phoneNumber: "",
     password: "",
-    passwordConfirm: "",
-}
 
+}
+const lowercaseRegex = /(?=.*[a-z])/
+const uppercaseRegex = /(?=.*[A-Z])/
+const numbersRegex = /(?=.*[0-9])/
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -20,16 +25,35 @@ const validationSchema = Yup.object({
         .required("Phone Number is required")
         .matches(/^(\+98|0098|98|0)?9\d{9}$/, "Invalid Phone Number")
         .nullable(),
-    password: Yup.string().required("Password is required")
+    password: Yup.string()
+        .required("Password is required")
+        .matches(lowercaseRegex, 'one lowercase charecter needed')
+        .matches(uppercaseRegex, 'one uppercase charecter needed')
+        .matches(numbersRegex, 'one number charecter needed')
         .min(8, 'use at least eight characters')
         .max(30, "password length can't exceed 30 charecters")
 
 
 })
 const SignUpPage = () => {
+
+    const [signUpErr, setSignUpErr] = useState()
+    const onSubmit = async (values) => {
+        try {
+
+            const { data } = await axios.post('https://nodejs-post-app.herokuapp.com/api/user/register', values)
+            console.log(data)
+        } catch (error) {
+            console.log(error, error.response.data.message)
+            setSignUpErr(error.response.data.message)
+        }
+
+    }
+
+
     const formik = useFormik({
         initialValues,
-
+        onSubmit,
         validationSchema,
         validateOnMount: true,
     })
@@ -54,6 +78,7 @@ const SignUpPage = () => {
                     type="password"
                 />
 
+                {signUpErr && <p className="text-red-500 ">{signUpErr}</p>}
                 <button
 
                     type="submit"
@@ -62,7 +87,7 @@ const SignUpPage = () => {
                 >
                     Signup
                 </button>
-
+                <p>Already signed up?</p> <NavLink to='/Login'><span className="text-blue-700">login</span></NavLink>
             </form>
         </div>
     );

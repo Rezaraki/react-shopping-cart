@@ -1,45 +1,63 @@
 import { useFormik } from "formik";
 import Input from "../components/Input";
 import * as Yup from 'yup';
-
-const lowercaseRegex = /(?=.*[a-z])/
-const uppercaseRegex = /(?=.*[A-Z])/
-const numbersRegex = /(?=.*[0-9])/
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logUserIn } from "../features/userSlice";
+import loginFunc from "../utilities/loginFunc";
 
 const validationSchema = Yup.object().shape({
-    emailOrPhone: Yup.string()
-        .required('Email / Phone is required')
-        .test('emailOrPhone', 'Email / Phone is invalid', (value) => {
-            // check for email vaildation
-            if (isNaN(value)) return Yup.string().email().isValidSync(value)
-            // check for phone Number vaildation
-            return Yup.string()
-                .matches(/^(\+98|0098|98|0)?9\d{9}$/).isValidSync(value)
+    // emailOrPhone: Yup.string()
+    //     .required('Email / Phone is required')
+    //     .test('emailOrPhone', 'Email / Phone is invalid', (value) => {
+    //         // check for email vaildation
+    //         if (isNaN(value)) return Yup.string().email().isValidSync(value)
+    //         // check for phone Number vaildation
+    //         return Yup.string()
+    //             .matches(/^(\+98|0098|98|0)?9\d{9}$/).isValidSync(value)
 
-        })
+    //     })
+    email: Yup.string().required('Email is required').email('email format not correct')
     ,
     password: Yup.string()
         .required("Password is required")
-        .matches(lowercaseRegex, 'one lowercase charecter needed')
-        .matches(uppercaseRegex, 'one uppercase charecter needed')
-        .matches(numbersRegex, 'one number charecter needed')
         .min(8, 'use at least eight characters')
         .max(30, "password length can't exceed 30 charecters")
 });
 
 
 const initialValues = {
-    name: "",
-    emailOrPhone: "",
+
+    email: "",
     password: ""
 
 }
 const LoginPage = () => {
+    const cartCount = useSelector(state => state.cart.length)
+    const [loginErr, setLoginErr] = useState()
+    const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const onSubmit = (formValues) => {
+
+
+        loginFunc(formValues)
+            .then(response => {
+
+                dispatch(logUserIn(response.data))
+                localStorage.setItem('loggedUserData', JSON.stringify(response.data))
+                if (cartCount) navigate('/cart'); else navigate('/')
+            })
+            .catch(error => { setLoginErr(error.response.data.message) })
+
+    }
 
     const formik = useFormik({
         initialValues,
         validationSchema,
         validateOnMount: true,
+        onSubmit,
     })
 
     return (
@@ -50,8 +68,8 @@ const LoginPage = () => {
 
                 <Input
                     formik={formik}
-                    name="emailOrPhone"
-                    label="Phone Number orEmail"
+                    name="email"
+                    label="Email"
 
                 />
                 <Input
@@ -60,6 +78,7 @@ const LoginPage = () => {
                     label="Password"
                     type="password"
                 />
+                {loginErr && <p className="text-red-500 ">{loginErr}</p>}
 
                 <button
 
@@ -71,6 +90,7 @@ const LoginPage = () => {
                 </button>
 
             </form>
+            {/* <button className="border" onClick={() => dispatch(logUserIn({ yhy: 'kkk' }))}>asdfsdfsd</button> */}
         </div>
 
 
