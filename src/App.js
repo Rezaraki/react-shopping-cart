@@ -11,23 +11,27 @@ import SignUpPage from './pages/SignupPage';
 import NavBar from './components/NavBar';
 import { useEffect } from 'react';
 import loginFunc from './utilities/loginFunc';
+import { useDispatch } from 'react-redux';
+import { logUserIn } from './features/userSlice';
 
 function App() {
   const localUserData = JSON.parse(localStorage.getItem('loggedUserData'))
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    const { email, password } = localUserData
-    const loginValues = { email, password }
+    if (localUserData) {
+      const { email, password } = localUserData
+      const loginValues = { email, password }
 
-    loginFunc(loginValues)
-      .then(response => {
+      loginFunc(loginValues)
+        .then(response => {
 
-        dispatch(logUserIn(response.data))
-        localStorage.setItem('loggedUserData', JSON.stringify(response.data))
-        if (cartCount) navigate('/cart'); else navigate('/')
-      })
-      .catch(error => { setLoginErr(error.response.data.message) })
+          dispatch(logUserIn(response.data))
 
+
+        })
+        .catch(error => { console.log(error.response?.data?.message) })
+
+    }
 
   }, [])
 

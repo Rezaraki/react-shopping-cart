@@ -10,19 +10,27 @@ const ProductSnippet = ({ props: { id, name, price, image } }) => {
   const cartData = useSelector((state) => state.cart);
   const clickHandler = (prodId) => {
     dispatch(addToCart(prodId));
-    console.log(prodId);
   };
 
   return (
-    <div>
-      <img className="w-full" src={image} alt={name} />
-      <h2>{name}</h2>
-      <h2>price: {price}</h2>
-      {cartData.some((cartElem) => cartElem.productId === id) ? (
-        <button onClick={() => navigate("/cart")}>go to cart</button>
-      ) : (
-        <button onClick={() => clickHandler(id)}>add to cart</button>
-      )}
+    <div className="md:hover:shadow-md shadow-md ">
+      <img className="w-full rounded-t" src={image} alt={name} />
+      <div className=" bg-gray-200 md:rounded-b  border-white md:border-x-2 border-b-2 flex justify-between px-3 py-1">
+        <div>
+          <h2 className="font-sans text-base font-bold ">{name}</h2>
+          <h2 className="font-semibold">{price} $</h2>
+        </div>
+
+        <div className="flex items-center">
+          <div>
+            {cartData.some((cartElem) => cartElem.productId === id) ? (
+              <button onClick={() => navigate("/cart")}>go to cart</button>
+            ) : (
+              <button onClick={() => clickHandler(id)}>add to cart</button>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

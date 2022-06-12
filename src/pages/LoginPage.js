@@ -46,7 +46,8 @@ const LoginPage = () => {
             .then(response => {
 
                 dispatch(logUserIn(response.data))
-                localStorage.setItem('loggedUserData', JSON.stringify(response.data))
+
+                localStorage.setItem('loggedUserData', JSON.stringify({ ...response.data, ...formValues }))
                 if (cartCount) navigate('/cart'); else navigate('/')
             })
             .catch(error => { setLoginErr(error.response.data.message) })

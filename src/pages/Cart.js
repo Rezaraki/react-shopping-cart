@@ -28,16 +28,19 @@ const Cart = () => {
     return (
         <>
 
-            <h2> cart page is here</h2>
 
-            <div className="flex justify-center ">
+
+            <div className="lg:flex lg:justify-center ">
+
+
+
                 {/* main */}
-                <main className="w-3/5 bg-gray-400  ">
-                    {prodsToShow.map(elem => <CartProductSnippet key={elem.productId} quantity={elem.quantity} props={elem.productBody} />)}
+                <main className="lg:w-3/5 mb-3 py-2 bg-gray-300  ">
+                    {prodsToShow.map((elem, index) => <CartProductSnippet cartLength={prodsToShow.length} index={index} key={elem.productId} quantity={elem.quantity} props={elem.productBody} />)}
 
                 </main>
-                <aside className='w-1/5 ml-7'>
-                    <div className='border  bg-gray-400  '>
+                <aside className='lg:w-1/5 lg:ml-7'>
+                    <div className='border  bg-gray-300  '>
                         <h2>number of items: {cartproductCount}</h2>
                         <h2>cart totalcost {totalCost} </h2>
                         <button className='' onClick={() => { navigate('/checkout') }}>go to checkout</button>

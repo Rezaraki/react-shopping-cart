@@ -4,6 +4,8 @@ import { addCount, decount, deleteItem } from "../features/cartSlice";
 const CartProductSnippet = ({
   props: { id, name, price, image },
   quantity,
+  cartLength,
+  index,
 }) => {
   //   console.log(id, name, price, image);
   //   { id, name, price, image }
@@ -19,16 +21,18 @@ const CartProductSnippet = ({
   const deleteHandler = (prodId) => {
     dispatch(deleteItem(prodId));
   };
-
+  console.log(index, cartLength, cartLength === index - 1);
   return (
-    <div className="box-border px-1 pt-1  mb-2 ">
-      <div className="flex w-full bg-slate-300 rounded-lg  h-36 ">
-        <img className="h-full rounded-lg" src={image} alt={name} />
+    <div
+      className={`box-border px-1 ${cartLength - 1 === index ? "" : "mb-2"} `}
+    >
+      <div className="flex w-full bg-gray-200 rounded  h-36 ">
+        <img className="h-full rounded-l" src={image} alt={name} />
 
-        <div className="  flex justify-around w-full ">
+        <div className=" border-y-2 border-r-2  border-white rounded-r flex justify-around items-center w-full ">
           <h2>{name}</h2>
           <h2 className=" ">quantity:</h2>
-          <button className="  min-h-0 " onClick={() => addHandler(id)}>
+          <button className=" min-h-0 " onClick={() => addHandler(id)}>
             add
           </button>
           <span> {quantity} </span>

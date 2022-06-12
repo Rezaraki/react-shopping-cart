@@ -13,16 +13,13 @@ const HomePage = () => {
 
   return (
     <>
-      <h2>homepage</h2>
       <div className="flex justify-center ">
         {/* main */}
-        <main className="w-3/5 bg-gray-400  grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 ">
+        <main className="lg:w-4/5 w-full bg-gray-300 sm:p-3 grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))]   sm:gap-6 gap-2 ">
           {availableProducts.map((prod) => (
             <ProductSnippet key={prod.id} props={prod} />
           ))}
         </main>
-        <aside>some content to be placed here</aside>
-        <button onClick={() => navigate("/cart")}> go to cart</button>
       </div>
     </>
   );
