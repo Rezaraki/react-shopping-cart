@@ -10,19 +10,24 @@ import SignUpPage from './pages/SignupPage';
 
 import NavBar from './components/NavBar';
 import { useEffect } from 'react';
-import loginFunc from './utilities/loginFunc';
 import { useDispatch } from 'react-redux';
+import { useLoginUserMutation } from './features/api/apiSlice';
 import { logUserIn } from './features/userSlice';
 
+
 function App() {
+  const loginUser = useLoginUserMutation()[0]
   const localUserData = JSON.parse(localStorage.getItem('loggedUserData'))
   const dispatch = useDispatch();
+
+  // for keeping user logged in using tioken in 
   useEffect(() => {
+
     if (localUserData) {
       const { email, password } = localUserData
       const loginValues = { email, password }
 
-      loginFunc(loginValues)
+      loginUser(loginValues)
         .then(response => {
 
           dispatch(logUserIn(response.data))

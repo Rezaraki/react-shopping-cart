@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { addCount, decount, deleteItem } from "../features/cartSlice";
 
 const CartProductSnippet = ({
-  props: { id, name, price, image },
+  props: { id, title, price, image },
   quantity,
   cartLength,
   index,
@@ -27,10 +27,10 @@ const CartProductSnippet = ({
       className={`box-border px-1 ${cartLength - 1 === index ? "" : "mb-2"} `}
     >
       <div className="flex w-full bg-gray-200 rounded  h-36 ">
-        <img className="h-full rounded-l" src={image} alt={name} />
+        <img className="h-full rounded-l" src={image} alt={title} />
 
         <div className=" border-y-2 border-r-2  border-white rounded-r flex justify-around items-center w-full ">
-          <h2>{name}</h2>
+          <h2>{title}</h2>
           <h2 className=" ">quantity:</h2>
           <button className=" min-h-0 " onClick={() => addHandler(id)}>
             add

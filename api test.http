@@ -1,0 +1,11 @@
+post https://nodejs-post-app.herokuapp.com/api/user/register
+
+{
+     name: "weasrdfg",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    
+}
+###
+get https://fakestoreapi.com/products

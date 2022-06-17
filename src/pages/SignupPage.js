@@ -2,8 +2,11 @@ import { useFormik } from "formik";
 import Input from "../components/Input";
 import * as Yup from 'yup';
 import { NavLink } from "react-router-dom";
-import axios from "axios"
 import { useState } from "react";
+import { useSignUpUsersMutation } from "../features/api/apiSlice";
+
+
+
 
 const initialValues = {
     name: "",
@@ -15,6 +18,7 @@ const initialValues = {
 const lowercaseRegex = /(?=.*[a-z])/
 const uppercaseRegex = /(?=.*[A-Z])/
 const numbersRegex = /(?=.*[0-9])/
+
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -37,15 +41,19 @@ const validationSchema = Yup.object({
 })
 const SignUpPage = () => {
 
+    const [signUser, { isLoading, isSuccess }] = useSignUpUsersMutation();
+
     const [signUpErr, setSignUpErr] = useState()
     const onSubmit = async (values) => {
+
         try {
 
-            const { data } = await axios.post('https://nodejs-post-app.herokuapp.com/api/user/register', values)
-            console.log(data)
+            await signUser(values).unwrap()
+
         } catch (error) {
-            console.log(error, error.response.data.message)
-            setSignUpErr(error.response.data.message)
+
+            console.log('error', error, error.data.message)
+            setSignUpErr(error.data.message)
         }
 
     }
@@ -60,35 +68,39 @@ const SignUpPage = () => {
 
 
     return (
+        <div className="sm:flex sm:justify-center">
 
-        <div className="sm:flex sm:justify-center bg-slate-400 ">
-            <form className="p-2  sm:min-w-[400px] bg-stone-400" onSubmit={formik.handleSubmit}>
-                <Input formik={formik} name="name" label="Name" />
-                <Input formik={formik} name="email" label="Email" type="email" />
-                <Input
-                    formik={formik}
-                    name="phoneNumber"
-                    label="Phone Number"
-                    type="tel"
-                />
-                <Input
-                    formik={formik}
-                    name="password"
-                    label="Password"
-                    type="password"
-                />
+            <div className=" sm:w-4/5 w-full  sm:flex sm:justify-center sm:pt-6 pb-8  min-h-min   bg-gray-300   ">
 
-                {signUpErr && <p className="text-red-500 ">{signUpErr}</p>}
-                <button
+                <form className="py-2 px-4 sm:w-3/12 h-min sm:min-w-[400px] bg-gray-200" onSubmit={formik.handleSubmit}>
+                    <Input formik={formik} name="name" label="Name" />
+                    <Input formik={formik} name="email" label="Email" type="email" />
+                    <Input
+                        formik={formik}
+                        name="phoneNumber"
+                        label="Phone Number"
+                        type="tel"
+                    />
+                    <Input
+                        formik={formik}
+                        name="password"
+                        label="Password"
+                        type="password"
+                    />
 
-                    type="submit"
-                    disabled={!formik.isValid}
-                    className="w-full mt-2 disabled:bg-slate-700 disabled:text-white disabled:font-bold disabled:py-1 disabled:px-4 disabled:rounded disabled:opacity-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 border border-blue-700 rounded   "
-                >
-                    Signup
-                </button>
-                <p>Already signed up?</p> <NavLink to='/Login'><span className="text-blue-700">login</span></NavLink>
-            </form>
+                    {signUpErr && <p className="text-red-500 mt-1">{signUpErr}</p>}
+                    <button
+
+                        type="submit"
+                        disabled={!formik.isValid}
+                        className="w-full mt-2 disabled:bg-slate-700 disabled:text-white disabled:font-bold disabled:py-1 disabled:px-4 disabled:rounded disabled:opacity-50 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 border border-blue-700 rounded   "
+                    >
+                        Signup
+                    </button>
+                    <p>Already signed up?</p> <NavLink to='/Login'><span className="text-blue-700">login</span></NavLink>
+                </form>
+
+            </div>
         </div>
     );
 }

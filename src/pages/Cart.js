@@ -8,7 +8,7 @@ const Cart = () => {
     const cartData = useSelector(state => state.cart)
     const dispatch = useDispatch()
     const products = useSelector(state => state.products);
-    // 
+
     //  find products with the given id
     const findProdWithId = (id, productsArr) => productsArr.find(prod => prod.id === id)
 
