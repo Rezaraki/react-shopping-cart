@@ -9,3 +9,9 @@ post https://nodejs-post-app.herokuapp.com/api/user/register
 }
 ###
 get https://fakestoreapi.com/products
+###
+get http://api.fakeshop-api.com/products/getAllProducts
+###
+get https://api.escuelajs.co/api/v1/products
+###
+get https://api.escuelajs.co/api/v1/products?offset=1&limit=10

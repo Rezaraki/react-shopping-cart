@@ -11,7 +11,7 @@ export const apiSlice = createApi({
 
         getProducts: builder.query({
 
-            query: () => 'fakestoreapi.com/products',
+            query: (page) => `api.escuelajs.co/api/v1/products?offset=${page}&limit=12`,
 
         }),
         signUpUsers: builder.mutation({

@@ -7,22 +7,25 @@ const Cart = () => {
     const navigate = useNavigate()
     const cartData = useSelector(state => state.cart)
     const dispatch = useDispatch()
-    const products = useSelector(state => state.products);
+    // const products = useSelector(state => state.products);
 
-    //  find products with the given id
-    const findProdWithId = (id, productsArr) => productsArr.find(prod => prod.id === id)
+    // //  find products with the given id
+    // const findProdWithId = (id, productsArr) => productsArr.find(prod => prod.id === id)
 
-    // concat id,quntity and prodBidy in an obj return {productId,quantity,productBody}
-    const cartProdObjMaker = (cartDataElem, productsArr) => { return { ...cartDataElem, productBody: findProdWithId(cartDataElem.productId, productsArr) } }
+    // // concat id,quntity and prodbody in an obj, return {productId,quantity,productBody}
+    // const cartProdObjMaker = (cartDataElem, productsArr) => { return { ...cartDataElem, productBody: findProdWithId(cartDataElem.productId, productsArr) } }
 
-    //  an array of cart products with id and quantity
-    const matchCartDataToProduct = (cartDataArr, productsArr) => cartDataArr.map(cartDataArrElem => cartProdObjMaker(cartDataArrElem, productsArr))
-    const prodsToShow = matchCartDataToProduct(cartData, products)
+    // //  an array of cart products with id and quantity
+    // const matchCartDataToProduct = (cartDataArr, productsArr) => cartDataArr.map(cartDataArrElem => cartProdObjMaker(cartDataArrElem, productsArr))
+    // const prodsToShow = matchCartDataToProduct(cartData, products)
 
-    // number of deferent type product not with the quantity count
-    const cartproductCount = prodsToShow.length
 
-    const totalCost = prodsToShow.map(prod => prod.quantity * prod.productBody.price)?.reduce((preVal, curVal) => preVal + curVal, 0)
+
+
+    // number of different types of product not with the quantity count
+    const cartproductCount = cartData.length
+
+    const totalCost = cartData.map(prod => prod.quantity * prod.productBody.price)?.reduce((preVal, curVal) => preVal + curVal, 0)
 
 
     return (
@@ -36,7 +39,7 @@ const Cart = () => {
 
                 {/* main */}
                 <main className="lg:w-3/5 mb-3 py-2 bg-gray-300  ">
-                    {prodsToShow.map((elem, index) => <CartProductSnippet cartLength={prodsToShow.length} index={index} key={elem.productId} quantity={elem.quantity} props={elem.productBody} />)}
+                    {cartData.map((elem, index) => <CartProductSnippet cartLength={cartData.length} index={index} key={elem.productBody.id} quantity={elem.quantity} props={elem.productBody} />)}
 
                 </main>
                 <aside className='lg:w-1/5 lg:ml-7'>

@@ -39,7 +39,7 @@ const LoginPage = () => {
             // localStorage.setItem('loggedUserData', JSON.stringify({
             //     ...response.data
             // }))
-            // dispatch(logUserIn(response.data))
+            dispatch(logUserIn(response.data))
             console.log(response)
             if (cartCount) navigate('/cart'); else navigate('/')
         } catch (error) {

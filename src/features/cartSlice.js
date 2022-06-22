@@ -13,7 +13,7 @@ export const cartSlice = createSlice({
             const indexOfNewProd = state.findIndex(cartObj => cartObj.productId === action.payload)
             if (indexOfNewProd < 0) {
                 // add the product to cart
-                state.push({ productId: action.payload, quantity: 1 })
+                state.push({ productBody: action.payload, quantity: 1 })
                 // state.push(new CartObjGen(action.payload))
             } else {
                 // add to quantity
